@@ -90,53 +90,6 @@ class VDJ(object):
                 return False
             elif vdf["VSCORE"] >= self.vthreshold:
                 return True
-    
-    def threading(self, df, CDR3, threading_db_path="/work/pi_gblanck/Arpan/UVM/scripts/threading_db"):
-        def lcs(S,T):
-            try:
-                m = len(S)
-                T = T[-20:]
-                n = len(T)
-                counter = [[0]*(n+1) for x in range(m+1)]
-                longest = 0
-                lcs_set = set()
-                for i in range(m):
-                    for j in range(n):
-                        if S[i] == T[j]:
-                            c = counter[i][j] + 1
-                            counter[i+1][j+1] = c
-                            if c > longest:
-                                lcs_set = set()
-                                longest = c
-                                lcs_set.add(S[i-c+1:i+1])
-                            elif c == longest:
-                                lcs_set.add(S[i-c+1:i+1])
-
-                match_list = list(lcs_set)
-                match_list = [i for i in match_list if i.startswith("C")]
-
-                return list(match_list)[0]
-            except:
-                return None
-
-        def compute_vcdr3(df, CDR3, threading_db_path):
-            for side in ["V"]:
-                accession_id = df["%sID"%side].split("|")
-                df["%s_Accession"%side] = accession_id[0]
-                df["%sID"%side] = accession_id[1]
-                df2 = pd.read_csv(os.path.join(threading_db_path, "%s_data.csv"%side))
-                df2 = df2.drop_duplicates("%s.Name"%side)
-                df2["%sID"%side] = df2["%s.Name"%side]
-                df2 = df2[["%sID"%side, "%s.AA.String"%side]]
-                df = pd.DataFrame([df.tolist()], columns=df.index)
-                df = df.merge(df2, on="%sID"%side, how='left')
-
-            df["V_CDR3"] = df.apply(lambda x: lcs(CDR3, x["V.AA.String"]), axis=1)
-            df['V_CDR3'] = df['V_CDR3'].fillna("C")
-            return df['V_CDR3'].item()
-
-        df_copy = df.copy(deep = True)
-        return compute_vcdr3(df_copy, CDR3, threading_db_path)
 
     def junction_find(self):
         junctions = re.search(r'((tgt|tgc)(...){4,20}(ttt|ttc|tgg)(ggt|ggc|gga|ggg)(...)(ggt|ggc|gga|ggg))', self.results['JREMAINDERSEQ'])
