@@ -20,4 +20,4 @@ module add apps/python/3.8.5
 python3 -m pip install localcider
 python3 -m pip install lifelines
 # -u makes it print stuff immediately instead of everything once it finishes.
-python3 -u t4_run_VDJrecord_kon_dlbcl.py /work/pi_gblanck/Arpan/NBL_WXS/NBL_BAMS_Results/final_csv /work/pi_gblanck/Arpan/NBL_WXS/NBL_BAMS_Results/final_csv/sample.tsv /work/pi_gblanck/Arpan/NBL_WXS/scripts/threading_db
+python3 -u t4_run_VDJrecord.py /work/pi_gblanck/Arpan/NBL_WXS/NBL_BAMS_Results/final_csv /work/pi_gblanck/Arpan/NBL_WXS/NBL_BAMS_Results/final_csv/sample.tsv /work/pi_gblanck/Arpan/NBL_WXS/scripts/threading_db

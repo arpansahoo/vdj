@@ -2,7 +2,7 @@
 import os
 import sys
 
-from t4_VDJrecord_kon_dlbcl import VDJrecord
+from t4_VDJrecord import VDJrecord
 
 
 path = sys.argv[1]
