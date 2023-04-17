@@ -17,7 +17,7 @@ This software, created in the Blanck Lab at the USF Morsani College of Medicine,
   - The t3 module has multiple tasks, but most importantly, it finds the matching V/D/J/CDR3 sequence for each read 
   - Edit the file paths in this script
   - Remember to place the vdjdb folder into the directory that you indicate
-- Run `t4_pre.sh`
+- Run `sbatch t4_pre.sh`
   - Edit filepaths in `t4_pre.sh` and `t4_pre.py`
 - Run `sbatch t4_start_VDJRecord.sh`
   - Edit cancer in `t4_run_VDJrecord.py`, edit filepaths in `t4_start_VDJrecord.sh`
