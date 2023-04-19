@@ -22,6 +22,8 @@ IFS='#' read -a receptors_to_do < /work/pi_gblanck/Arpan/NBL_WXS/scripts/t3_rect
 
 echo "array task id:" $SLURM_ARRAY_TASK_ID
 echo "receptor:" ${receptors_to_do[$SLURM_ARRAY_TASK_ID]}
-python3 -u "/work/pi_gblanck/Arpan/NBL_WXS/scripts/t3_findvdjum.py" ${receptors_to_do[$SLURM_ARRAY_TASK_ID]} "/work/pi_gblanck/Arpan/NBL_WXS/NBL_BAMS_Results/" "/work/pi_gblanck/Arpan/NBL_WXS/scripts/t3_vdjdb/"
+results_dir="/work/pi_gblanck/Arpan/NBL_WXS/NBL_BAMS_Results/"
+vdjdb="/work/pi_gblanck/Arpan/NBL_WXS/scripts/t3_vdjdb/"
+python3 -u "/work/pi_gblanck/Arpan/NBL_WXS/scripts/t3_findvdjum.py" ${receptors_to_do[$SLURM_ARRAY_TASK_ID]} $results_dir $vdjdb
 
 echo 'done'
