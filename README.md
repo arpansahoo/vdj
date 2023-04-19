@@ -21,5 +21,5 @@ This software, created in the Blanck Lab at the USF Morsani College of Medicine,
   - Edit filepaths in `t4_pre.sh` and `t4_pre.py`
 - Run `sbatch t4_start_VDJRecord.sh`
   - Edit cancer in `t4_run_VDJrecord.py`, edit filepaths in `t4_start_VDJrecord.sh`
-  - Before running t4, download `sample.tsv` from GDC, and put it in the results from t4_pre
+  - Before running t4, download `sample.tsv` from GDC, and put it in the `final_csv` directory created by t4_pre
   
