@@ -1,7 +1,9 @@
-# VDJ mining software 
+# VDJ mining software
+
 This software, created in the Blanck Lab at the USF Morsani College of Medicine, recovers TCR V(D)J recombination reads from sequencing data and identifies CDR3 regions within those reads. We also include code for physico-chemical analysis of the CDR3s. The latest version of the software also includes a `threading` method in `t4_vdjrecord.py` to stitch V- and J- segments to the CDR3s, creating full-length V-CDR3-J sequences that represent the entire TCR variable region.
 
 ## Instructions
+
 - Run `sbatch gdcslice.sh`
   - This will download bam slices from your manifest.
   - Get a manifest (for the WXS or RNA-seq files you're interested in) and token file beforehand from GDC
