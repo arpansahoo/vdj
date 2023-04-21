@@ -8,13 +8,13 @@ This software, created in the Blanck Lab at the USF Morsani College of Medicine,
 - Run `sbatch t2_Module_Search_IgTcR_header.sh`
   - First step in processing the bams
   - Edit the file paths in this script at the top and bottom
-  - May need to edit the file paths in `t2_Module_Search_IgTcRFix.sh`
+  - May need to edit the file paths in `t2_Module_Search_IgTcRFix.sh` as well
   - Make sure GNU parallel is installed
 - Run `python t3_set_task_items.py`
   - Edit the path at the top of the file to match the results folder generated from the previous step
-  - Note the array setting printed out to put into the next slurm config file, `t3_Run_VDJ.sh`
+  - Note the array setting printed out. You will need to put this setting into the next slurm config file, `t3_Run_VDJ.sh`
 - Run `sbatch t3_RunVDJ.sh`
-  - The t3 module has multiple tasks, but most importantly, it finds the matching V/D/J/CDR3 sequence for each read 
+  - The t3 module has multiple tasks, but most importantly, it finds the matching V/D/J/CDR3 sequence for each read
   - Edit the file paths in this script
   - Remember to place the vdjdb folder into the directory that you indicate
 - Run `sbatch t4_pre.sh`
@@ -22,4 +22,3 @@ This software, created in the Blanck Lab at the USF Morsani College of Medicine,
 - Run `sbatch t4_start_VDJRecord.sh`
   - Edit cancer in `t4_run_VDJrecord.py`, edit filepaths in `t4_start_VDJrecord.sh`
   - Before running t4, download `sample.tsv` from GDC, and put it in the `final_csv` directory created by t4_pre
-  
