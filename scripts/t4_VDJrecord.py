@@ -259,7 +259,7 @@ class VDJrecord(object):
             tra = tra.merge(travdjdb, on="CDR3", how="inner")
             trb = trb.merge(trbvdjdb, on="CDR3", how="inner")
             df = pd.concat([tra, trb])
-            df = df.drop_duplicates("Read ID")
+            df = df.drop_duplicates("Read ID") # FIXME is this necessary?
             df = df.drop(["complex.id", "Gene", "V", "J"], axis=1)
             self.vdjdbmatch = df
             return self.vdjdbmatch
