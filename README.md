@@ -7,6 +7,7 @@ This software, created in the Blanck Lab at the USF Morsani College of Medicine,
 - Run `sbatch gdcslice.sh`
   - This will download bam slices from your manifest.
   - Get a manifest (for the WXS or RNA-seq files you're interested in) and token file beforehand from GDC
+  - There are some lines in gdcslice.sh that you must edit, check the script!
 - Run `sbatch t2_Module_Search_IgTcR_header.sh`
   - First step in processing the bams
   - Edit the file paths in this script at the top and bottom
@@ -14,7 +15,8 @@ This software, created in the Blanck Lab at the USF Morsani College of Medicine,
   - Make sure GNU parallel is installed
 - Run `python t3_set_task_items.py`
   - Edit the path at the top of the file to match the results folder generated from the previous step
-  - Note the array setting printed out. You will need to put this setting into the next slurm config file, `t3_Run_VDJ.sh`
+  - Note the array setting printed out. You will need to put this setting into the next slurm config file, `t3_Run_VDJ.sh` (the instruction says 
+    "need to change array=0-numjobs depending on console output from t3_set_task_items.py").
 - Run `sbatch t3_RunVDJ.sh`
   - The t3 module has multiple tasks, but most importantly, it finds the matching V/D/J/CDR3 sequence for each read
   - Edit the file paths in this script
