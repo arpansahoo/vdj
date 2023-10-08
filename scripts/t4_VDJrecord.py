@@ -270,20 +270,20 @@ class VDJrecord(object):
                 m = len(S)
                 T = T[-20:]
                 n = len(T)
-                counter = [[0] * (n + 1) for x in range(m + 1)]
+                counter = [[0] * (n+1) for x in range(m+1)]
                 longest = 0
                 lcs_set = set()
                 for i in range(m):
                     for j in range(n):
                         if S[i] == T[j]:
                             c = counter[i][j] + 1
-                            counter[i + 1][j + 1] = c
+                            counter[i+1][j+1] = c
                             if c > longest:
                                 lcs_set = set()
                                 longest = c
-                                lcs_set.add(S[i - c + 1 : i + 1])
+                                lcs_set.add(S[(i-c+1):(i+1)])
                             elif c == longest:
-                                lcs_set.add(S[i - c + 1 : i + 1])
+                                lcs_set.add(S[(i-c+1):(i+1)])
 
                 match_list = list(lcs_set)
                 match_list = [i for i in match_list if i.startswith("C")]
@@ -295,22 +295,22 @@ class VDJrecord(object):
         def lcs_j(S, T):
             try:
                 m = len(S)
-                T = T[:20]
+                # T = T[:20]
                 n = len(T)
-                counter = [[0] * (n + 1) for x in range(m + 1)]
+                counter = [[0] * (n+1) for x in range(m+1)]
                 longest = 0
                 lcs_set = set()
                 for i in range(m):
                     for j in range(n):
                         if S[i] == T[j]:
                             c = counter[i][j] + 1
-                            counter[i + 1][j + 1] = c
+                            counter[i+1][j+1] = c
                             if c > longest:
                                 lcs_set = set()
                                 longest = c
-                                lcs_set.add(S[i - c + 1 : i + 1])
+                                lcs_set.add(S[(i-c+1):(i+1)])
                             elif c == longest:
-                                lcs_set.add(S[i - c + 1 : i + 1])
+                                lcs_set.add(S[(i-c+1):(i+1)])
 
                 match_list = list(lcs_set)
                 return list(match_list)[0]
@@ -322,7 +322,7 @@ class VDJrecord(object):
             if phe_gly_doublet is None:
                 return None
             else:
-                j_string_prefix = j_string[: (phe_gly_doublet.start() + 1)]
+                j_string_prefix = j_string[:(phe_gly_doublet.start() + 1)]
                 lcs_result = lcs_j(cdr3_string, j_string_prefix)
                 if lcs_result is None:
                     return None
@@ -341,7 +341,7 @@ class VDJrecord(object):
             phe_gly_doublet = re.search(r"((F|W)(G)(.)(G))", j_string)
             if phe_gly_doublet is None:
                 return ""
-            return j_string[(phe_gly_doublet.start() + 1) :]
+            return j_string[(phe_gly_doublet.start() + 1):]
 
         def perform_threading(df, threading_db_path):
             for side in ["V", "J"]:
@@ -358,20 +358,18 @@ class VDJrecord(object):
             df["V.AA.String"] = df["V.AA.String"].fillna("")
             df["J.AA.String"] = df["J.AA.String"].fillna("")
 
+            # "V_CDR3" is the prefix of the CDR3 derived from the V segment
             df["V_CDR3"] = df.apply(lambda x: lcs(x["CDR3"], x["V.AA.String"]), axis=1)
             df["V_CDR3"] = df["V_CDR3"].fillna("C")
 
-            # temporary assignment to V_CDR3_J for use by compute_jcdr3() method
-            df["V_CDR3_J"] = df.apply(
-                lambda x: x["CDR3"][(x["CDR3"].find(x["V_CDR3"]) + len(x["V_CDR3"])) :],
-                axis=1,
-            )
-
+            # "J_CDR3" is the suffix of the CDR3 derived from the J segment
             df["J_CDR3"] = df.apply(
-                lambda x: compute_jcdr3(x["V_CDR3_J"], x["J.AA.String"]), axis=1
+                lambda x: compute_jcdr3(x["CDR3"][(x["CDR3"].find(x["V_CDR3"]) + len(x["V_CDR3"])) :],
+                                        x["J.AA.String"]), axis=1
             )
             df = df[df["J_CDR3"].notna()]
 
+            # Build the V-CDR3-J sequence. 
             df["V_CDR3_J"] = df.apply(
                 lambda x: chop_v(x["V.AA.String"], x["V_CDR3"]), axis=1
             )
