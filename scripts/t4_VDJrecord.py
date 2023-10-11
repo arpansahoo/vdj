@@ -295,7 +295,7 @@ class VDJrecord(object):
         def lcs_j(S, T):
             try:
                 m = len(S)
-                # T = T[:20]
+                T = T[:20]
                 n = len(T)
                 counter = [[0] * (n+1) for x in range(m+1)]
                 longest = 0
