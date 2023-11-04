@@ -264,6 +264,7 @@ class VDJrecord(object):
             self.vdjdbmatch = df
             return self.vdjdbmatch
 
+    # FIXME use Bio.Align.PairwiseAligner instead to align the V and CDR3 sequences
     def threading(self, threading_db_path):
         def lcs(S, T):
             try:
