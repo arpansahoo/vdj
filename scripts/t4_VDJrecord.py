@@ -264,7 +264,7 @@ class VDJrecord(object):
             self.vdjdbmatch = df
             return self.vdjdbmatch
 
-    # FIXME use Bio.Align.PairwiseAligner instead to align the V and CDR3 sequences
+    # FIXME use Bio.Align.PairwiseAligner in conjunction with LCS to align the V and CDR3 sequences
     def threading(self, threading_db_path):
         def lcs(S, T):
             try:
@@ -292,43 +292,6 @@ class VDJrecord(object):
                 return list(match_list)[0]
             except:
                 return None
-
-        def lcs_j(S, T):
-            try:
-                m = len(S)
-                T = T[:20]
-                n = len(T)
-                counter = [[0] * (n+1) for x in range(m+1)]
-                longest = 0
-                lcs_set = set()
-                for i in range(m):
-                    for j in range(n):
-                        if S[i] == T[j]:
-                            c = counter[i][j] + 1
-                            counter[i+1][j+1] = c
-                            if c > longest:
-                                lcs_set = set()
-                                longest = c
-                                lcs_set.add(S[(i-c+1):(i+1)])
-                            elif c == longest:
-                                lcs_set.add(S[(i-c+1):(i+1)])
-
-                match_list = list(lcs_set)
-                return list(match_list)[0]
-            except:
-                return None
-
-        def compute_jcdr3(cdr3_string, j_string):
-            phe_gly_doublet = re.search(r"((F|W)(G)(.)(G))", j_string)
-            if phe_gly_doublet is None:
-                return None
-            else:
-                j_string_prefix = j_string[:(phe_gly_doublet.start() + 1)]
-                lcs_result = lcs_j(cdr3_string, j_string_prefix)
-                if lcs_result is None:
-                    return None
-                start_index = cdr3_string.rfind(lcs_result)
-                return cdr3_string[start_index:]
 
         # V_CDR3 is a prefix of the CDR3, so just chop it off the V string
         def chop_v(v_string, v_cdr3):
@@ -362,13 +325,6 @@ class VDJrecord(object):
             # "V_CDR3" is the prefix of the CDR3 derived from the V segment
             df["V_CDR3"] = df.apply(lambda x: lcs(x["CDR3"], x["V.AA.String"]), axis=1)
             df["V_CDR3"] = df["V_CDR3"].fillna("C")
-
-            # "J_CDR3" is the suffix of the CDR3 derived from the J segment
-            df["J_CDR3"] = df.apply(
-                lambda x: compute_jcdr3(x["CDR3"][(x["CDR3"].find(x["V_CDR3"]) + len(x["V_CDR3"])) :],
-                                        x["J.AA.String"]), axis=1
-            )
-            df = df[df["J_CDR3"].notna()]
 
             # Build the V-CDR3-J sequence. 
             df["V_CDR3_J"] = df.apply(
