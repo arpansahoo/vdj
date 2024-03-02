@@ -240,8 +240,9 @@ class VDJrecord(object):
 
     def full_filter(self):
         self.raw_filename_format()
-        self.nt_match_length_filter()
-        self.nt_match_percent_filter()
+        # FIXME v and j match length standard
+        self.nt_match_length_filter(V_length=14, J_length=14)
+        self.nt_match_percent_filter(V_percent=80, J_percent=80)
         # self.filename_format()
         self.productive_unproductive_split()
         return self.filtered_productive, self.filtered_unproductive
@@ -259,7 +260,7 @@ class VDJrecord(object):
             tra = tra.merge(travdjdb, on="CDR3", how="inner")
             trb = trb.merge(trbvdjdb, on="CDR3", how="inner")
             df = pd.concat([tra, trb])
-            df = df.drop_duplicates("Read ID") # FIXME is this necessary?
+            # df = df.drop_duplicates("Read ID") # FIXME is this necessary?
             df = df.drop(["complex.id", "Gene", "V", "J"], axis=1)
             self.vdjdbmatch = df
             return self.vdjdbmatch
