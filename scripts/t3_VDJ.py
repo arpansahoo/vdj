@@ -140,8 +140,8 @@ class VDJ(object):
                 "Frame",
             )
         else:
-            junction = junctions.group(0)[: len(junctions.group(0)) - 9]
-            translation = str(Seq(junction).ungap("-").translate())
+            junction = junctions.group(0)[:(len(junctions.group(0)) - 9)]
+            translation = str(Seq(junction.replace("-", "")).translate())
 
             if "*" not in translation and (
                 translation[-1] == "W" or translation[-1] == "F"
