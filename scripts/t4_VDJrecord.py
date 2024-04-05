@@ -240,9 +240,8 @@ class VDJrecord(object):
 
     def full_filter(self):
         self.raw_filename_format()
-        # FIXME v and j match length standard
-        self.nt_match_length_filter(V_length=14, J_length=14)
-        self.nt_match_percent_filter(V_percent=80, J_percent=80)
+        self.nt_match_length_filter(V_length=9, J_length=9)
+        self.nt_match_percent_filter(V_percent=90, J_percent=90)
         # self.filename_format()
         self.productive_unproductive_split()
         return self.filtered_productive, self.filtered_unproductive
